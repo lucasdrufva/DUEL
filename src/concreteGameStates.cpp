@@ -3,7 +3,10 @@
 #include "SSD1306Wire.h"
 #include "radio.h"
 #include "ir.h"
+#include <Adafruit_MPU6050.h>
+#include <Adafruit_Sensor.h>
 
+extern Adafruit_MPU6050 mpu;
 extern SSD1306Wire display;
 extern Radio radio;
 extern IR ir;
@@ -77,7 +80,7 @@ void Play::command(Game *game, int command)
     else if (command == 10)
     {
         Serial.println("False Start during play!");
-        game->setState(FalseStart::getInstance(true));
+        game->setState(FalseStart::getInstance(false));
     }
 }
 
@@ -99,6 +102,18 @@ void Countdown::calculateTimeLeft(Game *game)
         timeLeft = (10 - ((millis() - countdownStartTime) / 1000));
         if (timeLeft == 0)
         {
+            //check false start
+            sensors_event_t a, g, temp;
+            mpu.getEvent(&a, &g, &temp);
+            Serial.println(a.acceleration.x);
+            if (a.acceleration.x < 6)
+            {
+                tone(buzzerPin, 200, 250);
+                radio.sendFalseStartCommand();
+                game->setState(FalseStart::getInstance(true));
+                return;
+            }
+
             tone(buzzerPin, 440, 200);
             game->setState(Play::getInstance());
         }
@@ -129,7 +144,7 @@ void Countdown::command(Game *game, int command)
     if (command == 10)
     {
         Serial.println("False Start during countdown!");
-        game->setState(FalseStart::getInstance(true));
+        game->setState(FalseStart::getInstance(false));
     }
 }
 

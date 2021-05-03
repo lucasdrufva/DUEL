@@ -10,6 +10,7 @@ class Radio
 public:
     Radio();
     void sendStartCommand();
+    void sendFalseStartCommand();
 
 private:
     uint8_t otherPlayerAddress[6];

@@ -52,3 +52,8 @@ void Radio::sendStartCommand(){
     message.command = 20;
     esp_now_send(otherPlayerAddress, (uint8_t *)&message, sizeof(message));
 }
+
+void Radio::sendFalseStartCommand(){
+    message.command = 10;
+    esp_now_send(otherPlayerAddress, (uint8_t *)&message, sizeof(message));
+}

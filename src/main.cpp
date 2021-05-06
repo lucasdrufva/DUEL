@@ -5,6 +5,8 @@
 #include "concreteGameStates.h"
 #include "radio.h"
 #include "ir.h"
+#include <IRremoteESP8266.h>
+#include <IRsend.h>
 
 #include "SSD1306Wire.h"
 #include <ESP8266WiFi.h>
@@ -35,6 +37,8 @@ void setup()
   display.init();
   display.setContrast(255);
 
+  ir.begin();
+
   Serial.println("Setup MPU");
 
   Wire.begin(5, 4);
@@ -53,6 +57,7 @@ void setup()
   delay(100);
 
   Serial.println("Hi!!");
+
 }
 
 void loop()
@@ -60,7 +65,10 @@ void loop()
   // put your main code here, to run repeatedly:
   if(digitalRead(buttonPin)){
     game.trigger();
+    delay(10);
   }
 
+  display.clear();
   game.render();
+  display.display();
 }

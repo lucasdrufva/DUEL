@@ -5,70 +5,70 @@
 class WaitingStart : public GameState
 {
 public:
-    void enter(Game* game){}
-    void render(Game* game);
-    void trigger(Game* game);
-    void command(Game* game, int command);
-    void exit(Game* game){}
-    static GameState& getInstance();
+    void enter(Game *game) {}
+    void render(Game *game);
+    void trigger(Game *game);
+    void command(Game *game, int command);
+    void exit(Game *game) {}
+    static GameState &getInstance();
 
 private:
     WaitingStart() {}
-	WaitingStart(const WaitingStart& other);
-	WaitingStart& operator=(const WaitingStart& other);
+    WaitingStart(const WaitingStart &other);
+    WaitingStart &operator=(const WaitingStart &other);
 };
 
 class Play : public GameState
 {
 public:
-    void enter(Game* game){}
-    void render(Game* game);
-    void trigger(Game* game);
-    void command(Game* game, int command);
-    void exit(Game* game){}
-    static GameState& getInstance();
+    void enter(Game *game) {}
+    void render(Game *game);
+    void trigger(Game *game);
+    void command(Game *game, int command);
+    void exit(Game *game) {}
+    static GameState &getInstance();
 
 private:
     Play() {}
-	Play(const Play& other);
-	Play& operator=(const Play& other);
+    Play(const Play &other);
+    Play &operator=(const Play &other);
 };
 
 class Countdown : public GameState
 {
 public:
-    void enter(Game* game);
-    void render(Game* game);
-    void trigger(Game* game){}
-    void command(Game* game, int command);
-    void exit(Game* game){}
-    static GameState& getInstance();
+    void enter(Game *game);
+    void render(Game *game);
+    void trigger(Game *game) {}
+    void command(Game *game, int command);
+    void exit(Game *game) {}
+    static GameState &getInstance();
 
 private:
     Countdown() {}
-	Countdown(const Countdown& other);
-	Countdown& operator=(const Countdown& other);
+    Countdown(const Countdown &other);
+    Countdown &operator=(const Countdown &other);
 
     unsigned long countdownStartTime;
     int timeLeft;
 
-    void calculateTimeLeft(Game* game);
+    void calculateTimeLeft(Game *game);
 };
 
 class Result : public GameState
 {
 public:
-    void enter(Game* game);
-    void render(Game* game);
-    void trigger(Game* game){}
-    void command(Game* game, int command){}
-    void exit(Game* game){}
-    static GameState& getInstance();
+    void enter(Game *game);
+    void render(Game *game);
+    void trigger(Game *game) {}
+    void command(Game *game, int command) {}
+    void exit(Game *game) {}
+    static GameState &getInstance();
 
 private:
     Result() {}
-	Result(const Result& other);
-	Result& operator=(const Result& other);
+    Result(const Result &other);
+    Result &operator=(const Result &other);
 
     unsigned long sceneStartTime;
 };
@@ -76,20 +76,46 @@ private:
 class FalseStart : public GameState
 {
 public:
-    void enter(Game* game);
-    void render(Game* game);
-    void trigger(Game* game){}
-    void command(Game* game, int command){}
-    void exit(Game* game){}
-    static GameState& getInstance();
-    static GameState& getInstance(bool isFalseStartPlayer);
+    void enter(Game *game);
+    void render(Game *game);
+    void trigger(Game *game) {}
+    void command(Game *game, int command) {}
+    void exit(Game *game) {}
+    static GameState &getInstance();
+    static GameState &getInstance(bool isFalseStartPlayer);
 
 private:
     FalseStart() {}
     FalseStart(bool isFalseStartPlayer);
-	FalseStart(const FalseStart& other);
-	FalseStart& operator=(const FalseStart& other);
+    FalseStart(const FalseStart &other);
+    FalseStart &operator=(const FalseStart &other);
 
     unsigned long sceneStartTime;
     bool isFalsePlayer = false;
+};
+
+class InfoScreenBeforeResult : public GameState
+{
+public:
+    void enter(Game *game);
+    void trigger(Game *game){}
+
+    bool isAffectedPlayer = false;
+    unsigned long sceneStartTime;
+
+    explicit InfoScreenBeforeResult(bool isAffectedPlayer);
+};
+
+class Won : public InfoScreenBeforeResult
+{
+public:
+    using InfoScreenBeforeResult::InfoScreenBeforeResult;
+    void render(Game *game);
+    void command(Game *game, int command) {}
+    void exit(Game *game) {}
+    static GameState &getInstance(bool isAffectedPlayer);
+
+private:
+    Won(const Won &other);
+    Won &operator=(const Won &other);
 };

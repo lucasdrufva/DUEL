@@ -1,11 +1,15 @@
 #include "ir.h"
 
+
 extern const uint16_t IrLedPin;
 IRsend irsend(IrLedPin);
 
 extern Game game;
 
-IR::IR(){
+void IR::begin(){
+    Serial.println("Init ir");
+
+    irsend.begin();
     if(game.isPlayerOne){
         sCommand = 0x0034;
         nec = irsend.encodeNEC(sAddress, sCommand);
@@ -17,4 +21,5 @@ IR::IR(){
 
 void IR::shoot(){
     irsend.sendNEC(nec);
+    Serial.println("shoot ir");
 }

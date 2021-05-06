@@ -2,15 +2,16 @@
 #include <IRremoteESP8266.h>
 #include <IRsend.h>
 #include "game.h"
+#include <Arduino.h>
 
 class IR
 {
 public:
-    IR();
+    void begin();
     void shoot();
 
 private:
-    uint16_t sAddress;
+    uint16_t sAddress = 0x0102;
     uint16_t sCommand;
     uint64_t nec;
 };

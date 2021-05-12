@@ -63,16 +63,14 @@ void Play::trigger(Game *game)
 
 void Play::command(Game *game, int command)
 {
-    if (command == 53)
+    if (command == 52)
     {
-        Serial.println("player won");
-        game->playerOneWon = true;
+        Serial.println("player one won");
         game->setState(Won::getInstance(game->isPlayerOne ? true : false));
     }
-    else if (command == 52)
+    else if (command == 53)
     {
-        Serial.println("player won");
-        game->playerOneWon = false;
+        Serial.println("player two won");
         game->setState(Won::getInstance(game->isPlayerOne ? false : true));
     }
     else if (command == 10)
@@ -180,52 +178,12 @@ GameState &Result::getInstance()
     return singleton;
 }
 
-FalseStart::FalseStart(bool isFalseStartPlayer)
+InfoScreen::InfoScreen(bool isAffected)
 {
-    isFalsePlayer = isFalseStartPlayer;
+    isAffectedPlayer = isAffected;
 }
 
-void FalseStart::enter(Game *game)
-{
-    sceneStartTime = millis();
-    tone(buzzerPin, 300, 100);
-}
-
-void FalseStart::render(Game *game)
-{
-    display.clear();
-    // Print to the screen
-    display.setFont(ArialMT_Plain_16);
-    if (isFalsePlayer)
-    {
-        display.drawString(0, 0, "You False Start");
-    }
-    else
-    {
-        display.drawString(0, 0, "Other player drew to early");
-    }
-
-    // Display it on the screen
-    display.display();
-
-    if (millis() - sceneStartTime > 5000)
-    {
-        game->setState(Result::getInstance());
-    }
-}
-
-GameState &FalseStart::getInstance(bool isFalseStartPlayer)
-{
-    static FalseStart singleton(isFalseStartPlayer);
-    return singleton;
-}
-
-InfoScreenBeforeResult::InfoScreenBeforeResult(bool isAffectedPlayer)
-{
-    isAffectedPlayer = isAffectedPlayer;
-}
-
-void InfoScreenBeforeResult::enter(Game *game)
+void InfoScreen::enter(Game *game)
 {
     sceneStartTime = millis();
     tone(buzzerPin, 300, 100);
@@ -252,5 +210,34 @@ void Won::render(Game *game)
 GameState &Won::getInstance(bool isAffectedPlayer)
 {
     static Won singleton(isAffectedPlayer);
+    return singleton;
+}
+
+void FalseStart::render(Game *game)
+{
+    display.clear();
+    // Print to the screen
+    display.setFont(ArialMT_Plain_16);
+    if (isAffectedPlayer)
+    {
+        display.drawString(0, 0, "You False Start");
+    }
+    else
+    {
+        display.drawString(0, 0, "Other player drew to early");
+    }
+
+    // Display it on the screen
+    display.display();
+
+    if (millis() - sceneStartTime > 5000)
+    {
+        game->setState(Result::getInstance());
+    }
+}
+
+GameState &FalseStart::getInstance(bool isAffectedPlayer)
+{
+    static FalseStart singleton(isAffectedPlayer);
     return singleton;
 }

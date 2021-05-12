@@ -73,28 +73,7 @@ private:
     unsigned long sceneStartTime;
 };
 
-class FalseStart : public GameState
-{
-public:
-    void enter(Game *game);
-    void render(Game *game);
-    void trigger(Game *game) {}
-    void command(Game *game, int command) {}
-    void exit(Game *game) {}
-    static GameState &getInstance();
-    static GameState &getInstance(bool isFalseStartPlayer);
-
-private:
-    FalseStart() {}
-    FalseStart(bool isFalseStartPlayer);
-    FalseStart(const FalseStart &other);
-    FalseStart &operator=(const FalseStart &other);
-
-    unsigned long sceneStartTime;
-    bool isFalsePlayer = false;
-};
-
-class InfoScreenBeforeResult : public GameState
+class InfoScreen : public GameState
 {
 public:
     void enter(Game *game);
@@ -103,13 +82,13 @@ public:
     bool isAffectedPlayer = false;
     unsigned long sceneStartTime;
 
-    explicit InfoScreenBeforeResult(bool isAffectedPlayer);
+    explicit InfoScreen(bool isAffectedPlayer);
 };
 
-class Won : public InfoScreenBeforeResult
+class Won : public InfoScreen
 {
 public:
-    using InfoScreenBeforeResult::InfoScreenBeforeResult;
+    using InfoScreen::InfoScreen;
     void render(Game *game);
     void command(Game *game, int command) {}
     void exit(Game *game) {}
@@ -118,4 +97,18 @@ public:
 private:
     Won(const Won &other);
     Won &operator=(const Won &other);
+};
+
+class FalseStart : public InfoScreen
+{
+public:
+    using InfoScreen::InfoScreen;
+    void render(Game *game);
+    void command(Game *game, int command) {}
+    void exit(Game *game) {}
+    static GameState &getInstance(bool isAffectedPlayer);
+
+private:
+    FalseStart(const FalseStart &other);
+    FalseStart &operator=(const FalseStart &other);
 };

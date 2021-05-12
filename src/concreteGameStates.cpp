@@ -1,4 +1,5 @@
 #include "concreteGameStates.h"
+#include "infoScreens.h"
 #include <Arduino.h>
 #include "SSD1306Wire.h"
 #include "radio.h"
@@ -66,11 +67,13 @@ void Play::command(Game *game, int command)
     if (command == 52)
     {
         Serial.println("player one won");
+        game->score[0]++;
         game->setState(Won::getInstance(game->isPlayerOne ? true : false));
     }
     else if (command == 53)
     {
         Serial.println("player two won");
+        game->score[1]++;
         game->setState(Won::getInstance(game->isPlayerOne ? false : true));
     }
     else if (command == 10)
@@ -147,97 +150,5 @@ void Countdown::command(Game *game, int command)
 GameState &Countdown::getInstance()
 {
     static Countdown singleton;
-    return singleton;
-}
-
-void Result::enter(Game *game)
-{
-    sceneStartTime = millis();
-    tone(buzzerPin, 300, 100);
-}
-
-void Result::render(Game *game)
-{
-    display.clear();
-    // Print to the screen
-    display.setFont(ArialMT_Plain_16);
-    display.drawString(0, 0, "Result ");
-
-    // Display it on the screen
-    display.display();
-
-    if (millis() - sceneStartTime > 5000)
-    {
-        game->setState(WaitingStart::getInstance());
-    }
-}
-
-GameState &Result::getInstance()
-{
-    static Result singleton;
-    return singleton;
-}
-
-InfoScreen::InfoScreen(bool isAffected)
-{
-    isAffectedPlayer = isAffected;
-}
-
-void InfoScreen::enter(Game *game)
-{
-    sceneStartTime = millis();
-    tone(buzzerPin, 300, 100);
-}
-
-void Won::render(Game *game)
-{
-    display.setFont(ArialMT_Plain_24);
-    if (isAffectedPlayer)
-    {
-        display.drawString(0, 0, "You won");
-    }
-    else
-    {
-        display.drawString(0, 0, "You died");
-    }
-
-    if (millis() - sceneStartTime > 5000)
-    {
-        game->setState(Result::getInstance());
-    }
-}
-
-GameState &Won::getInstance(bool isAffectedPlayer)
-{
-    static Won singleton(isAffectedPlayer);
-    return singleton;
-}
-
-void FalseStart::render(Game *game)
-{
-    display.clear();
-    // Print to the screen
-    display.setFont(ArialMT_Plain_16);
-    if (isAffectedPlayer)
-    {
-        display.drawString(0, 0, "You False Start");
-    }
-    else
-    {
-        display.drawString(0, 0, "Other player drew to early");
-    }
-
-    // Display it on the screen
-    display.display();
-
-    if (millis() - sceneStartTime > 5000)
-    {
-        game->setState(Result::getInstance());
-    }
-}
-
-GameState &FalseStart::getInstance(bool isAffectedPlayer)
-{
-    static FalseStart singleton(isAffectedPlayer);
     return singleton;
 }

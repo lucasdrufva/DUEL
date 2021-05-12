@@ -17,6 +17,7 @@ public:
     void initPlayer();
 
     bool playerOneWon = false;
+    int score[2] = {3, 2};
 
 private:
     GameState* currentState;

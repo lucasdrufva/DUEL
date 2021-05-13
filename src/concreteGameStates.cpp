@@ -15,13 +15,8 @@ extern const int buzzerPin;
 
 void WaitingStart::render(Game *game)
 {
-    display.clear();
-    // Print to the screen
     display.setFont(ArialMT_Plain_24);
     display.drawString(0, 0, "Start?");
-
-    // Display it on the screen
-    display.display();
 }
 
 void WaitingStart::trigger(Game *game)
@@ -48,13 +43,8 @@ GameState &WaitingStart::getInstance()
 
 void Play::render(Game *game)
 {
-    display.clear();
-    // Print to the screen
     display.setFont(ArialMT_Plain_24);
     display.drawString(0, 0, "PLAY");
-
-    // Display it on the screen
-    display.display();
 }
 
 void Play::trigger(Game *game)
@@ -127,15 +117,10 @@ void Countdown::render(Game *game)
 {
     calculateTimeLeft(game);
 
-    display.clear();
-    // Print to the screen
     display.setFont(ArialMT_Plain_16);
     display.drawString(0, 0, "Countdown: ");
     display.setFont(ArialMT_Plain_24);
     display.drawString(40, 25, String(timeLeft));
-
-    // Display it on the screen
-    display.display();
 }
 
 void Countdown::command(Game *game, int command)

@@ -37,8 +37,6 @@ Radio::Radio()
   // Once ESPNow is successfully Init, we will register for Send CB to
   // get the status of Trasnmitted packet
   esp_now_set_self_role(ESP_NOW_ROLE_CONTROLLER);
-  //esp_now_register_send_cb(OnDataSent);
-  //esp_now_register_recv_cb(OnDataRecv);
   esp_now_register_recv_cb([](uint8_t *mac, uint8_t *incomingData, uint8_t len){
     memcpy(&message, incomingData, sizeof(message));
     handleCommand(message.command);

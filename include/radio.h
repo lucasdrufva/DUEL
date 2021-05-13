@@ -21,7 +21,7 @@ private:
     void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len);
 };
 
-// Structure example to receive data
+// Structure to receive data
 // Must match the sender structure
 typedef struct struct_message
 {

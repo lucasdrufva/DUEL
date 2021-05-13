@@ -44,8 +44,6 @@ GameState &Won::getInstance(bool isAffectedPlayer)
 
 void FalseStart::render(Game *game)
 {
-    display.clear();
-    // Print to the screen
     display.setFont(ArialMT_Plain_16);
     if (isAffectedPlayer)
     {
@@ -55,9 +53,6 @@ void FalseStart::render(Game *game)
     {
         display.drawString(0, 0, "Other player drew to early");
     }
-
-    // Display it on the screen
-    display.display();
 
     if (millis() - sceneStartTime > 5000)
     {
@@ -73,8 +68,6 @@ GameState &FalseStart::getInstance(bool isAffectedPlayer)
 
 void Result::render(Game *game)
 {
-    display.clear();
-    // Print to the screen
     display.setFont(ArialMT_Plain_16);
     display.drawString(0, 0, "Result ");
     if(game->isPlayerOne){
@@ -84,9 +77,6 @@ void Result::render(Game *game)
         display.drawString(0, 30, String(game->score[1]));
         display.drawString(30, 30, String(game->score[0]));
     }
-
-    // Display it on the screen
-    display.display();
 
     if (millis() - sceneStartTime > 5000)
     {

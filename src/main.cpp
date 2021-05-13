@@ -22,7 +22,7 @@ Adafruit_MPU6050 mpu;
 SSD1306Wire display(0x3c, 5, 4);
 
 extern const uint16_t IrLedPin = 13;
-extern const int buzzerPin = 14;
+extern const int buzzerPin = 14; //14 normaly but change to 0 for silent debugging
 const int buttonPin = 15;
 int buttonState = 0;
 
@@ -62,7 +62,6 @@ void setup()
 
 void loop()
 {
-  // put your main code here, to run repeatedly:
   if(digitalRead(buttonPin)){
     game.trigger();
     delay(10);
